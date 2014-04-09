@@ -36,21 +36,24 @@ The project refers to the following NuGet packages:
 Telerik.Sitefinity.All.nupkg
 
 
-**TemplateImporter**
+**TemplateImporter** library
 
-Telerik.Sitefinity.Content.nupkg
+* Telerik.Sitefinity.Content.nupkg
 
-Telerik.Web.UI.nupkg
+* Telerik.Web.UI.nupkg
 
-Telerik.Sitefinity.Core.nupkg
+* Telerik.Sitefinity.Core.nupkg
 
-OpenAccess.Core.nupkg
+* OpenAccess.Core.nupkg
 
-Telerik.Sitefinity.Samples.Common
+* Telerik.Sitefinity.Samples.Common
 
-Telerik.Sitefinity.Core
-OpenAccess.Core
-Telerik.Sitefinity.Content
+
+**Telerik.Sitefinity.Core** library
+
+* OpenAccess.Core.nupkg
+
+* Telerik.Sitefinity.Content.nupkg
  
 
 
