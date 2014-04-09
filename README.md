@@ -33,7 +33,7 @@ The project refers to the following NuGet packages:
 
 **SitefinityWebApp** library
 
-Telerik.Sitefinity.All.nupkg
+* Telerik.Sitefinity.All.nupkg
 
 
 **TemplateImporter** library
