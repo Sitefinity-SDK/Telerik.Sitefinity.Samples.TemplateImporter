@@ -53,10 +53,12 @@ The project refers to the following NuGet packages:
 
 * OpenAccess.Core.nupkg
 
-* Telerik.Sitefinity.Samples.Common
 
 
-**Telerik.Sitefinity.Core** library
+**Telerik.Sitefinity.Samples.Common** library
+
+
+* Telerik.Sitefinity.Core *
 
 * OpenAccess.Core.nupkg
 
