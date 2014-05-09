@@ -1,6 +1,8 @@
 Telerik.Sitefinity.Samples.TemplateImporter
 ===========================================
 
+[![Build Status](http://sdk-jenkins-ci.cloudapp.net/buildStatus/icon?job=Telerik.Sitefinity.Samples.TemplateImporter.CI)](http://sdk-jenkins-ci.cloudapp.net/job/Telerik.Sitefinity.Samples.TemplateImporter.CI/)
+
 The Template Importer sample project comes together with the Template Importer Module that enables you to import in your Sitefinity site any website template created through the Sitefinity Template Builder.
 
 Using the Template Importer sample, you can:
