@@ -1,29 +1,28 @@
-﻿using System.Linq;
-using System.IO;
-using System.Text;
-using System;
-using Telerik.Sitefinity;
-using Telerik.Sitefinity.Utilities.Zip;
-using Telerik.Sitefinity.Modules.Pages;
-using Telerik.Sitefinity.Pages.Model;
-using Telerik.Sitefinity.Modules.GenericContent.Web.UI;
-using Telerik.Sitefinity.Web.UI;
-using Telerik.Sitefinity.Configuration;
-using Telerik.Sitefinity.Web.Configuration;
-using System.Xml.Serialization;
-using Telerik.Sitefinity.Web.UI.PublicControls;
-using Telerik.Sitefinity.Modules.Libraries;
-using Telerik.Sitefinity.GenericContent.Model;
-using Telerik.Sitefinity.Web.UI.NavigationControls;
+﻿using System;
 using System.Globalization;
-using Telerik.Sitefinity.Modules.Pages.Configuration;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml.Serialization;
+using Telerik.Sitefinity;
 using Telerik.Sitefinity.Abstractions;
+using Telerik.Sitefinity.Configuration;
+using Telerik.Sitefinity.GenericContent.Model;
+using Telerik.Sitefinity.Modules.GenericContent.Web.UI;
+using Telerik.Sitefinity.Modules.Libraries;
+using Telerik.Sitefinity.Modules.Pages;
+using Telerik.Sitefinity.Modules.Pages.Configuration;
+using Telerik.Sitefinity.Pages.Model;
+using Telerik.Sitefinity.Utilities.Zip;
+using Telerik.Sitefinity.Web.Configuration;
+using Telerik.Sitefinity.Web.UI;
+using Telerik.Sitefinity.Web.UI.NavigationControls;
+using Telerik.Sitefinity.Web.UI.PublicControls;
 
 namespace TemplateImporter
 {
     public class TemplateImporter
     {
-
         private string sitefinityTemplatesInstallationFolder;
         private string templateExtractionFolder;
         private string zipFileName;
@@ -33,26 +32,24 @@ namespace TemplateImporter
         private PageManager pageManager;
         private Template templateobject;
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateImporter" /> class.
         /// </summary>
-        /// <param name="ZipFileName">Name of the zip file.</param>
+        /// <param name="zipFileName">Name of the zip file.</param>
         /// <param name="applicationPath">The application path.</param>
-        public TemplateImporter(string ZipFileName, string applicationPath)
+        public TemplateImporter(string zipFileName, string applicationPath)
         {
             string uniqueExtension = DateTime.Now.ToFileTime().ToString();
 
             this.applicationPath = applicationPath;
-            this.zipFileName = ZipFileName;
+            this.zipFileName = zipFileName;
 
             this.templateExtractionFolder = string.Concat(applicationPath, "App_Data\\temp_", uniqueExtension, "\\");
             this.sitefinityTemplatesInstallationFolder = string.Concat(applicationPath, "App_Data\\Sitefinity\\WebsiteTemplates\\");
 
-            pageManager = PageManager.GetManager();
-            pageTemplate = pageManager.CreateTemplate();
-            pageTemplate.Category = new Guid();
+            this.pageManager = PageManager.GetManager();
+            this.pageTemplate = this.pageManager.CreateTemplate();
+            this.pageTemplate.Category = new Guid();
         }
 
 
@@ -62,66 +59,61 @@ namespace TemplateImporter
         public bool Import()
         {
             bool success = true;
-            string fileToExtract = string.Concat(applicationPath, zipFileName);
+            string fileToExtract = string.Concat(this.applicationPath, this.zipFileName);
 
             try
             {
+                this.Extract(fileToExtract, this.templateExtractionFolder);
 
-                Extract(fileToExtract, templateExtractionFolder);
+                this.GetTemplateFromXML();
 
-                GetTemplateFromXML();
-
-                if (templateobject != null)
+                if (this.templateobject != null)
                 {
-
                     //set template title
-                    if (templateobject.metadata == null || templateobject.metadata.metadataitems == null)
+                    if (this.templateobject.Metadata == null || this.templateobject.Metadata.MetadataItems == null)
                     {
-                        pageTemplate.Name = "untitled";
-                        pageTemplate.Title = "untitled";
+                        this.pageTemplate.Name = "untitled";
+                        this.pageTemplate.Title = "untitled";
                     }
                     else
                     {
-                        string title = templateobject.metadata.metadataitems.Where(m => m.id == "title").First().value;
+                        string title = this.templateobject.Metadata.MetadataItems.Where(m => m.Id == "title").First().Value;
 
-                        pageTemplate.Name = title;
-                        pageTemplate.Title = title;
+                        this.pageTemplate.Name = title;
+                        this.pageTemplate.Title = title;
                     }
 
-                    string templateInstallationFolder = string.Concat(sitefinityTemplatesInstallationFolder, pageTemplate.Name);
-                    CreateTemplateFolderStructure(templateInstallationFolder, pageTemplate.Name);
+                    string templateInstallationFolder = string.Concat(this.sitefinityTemplatesInstallationFolder, this.pageTemplate.Name);
+                    this.CreateTemplateFolderStructure(templateInstallationFolder, this.pageTemplate.Name);
 
 
-                    string cssPath = string.Concat(templateExtractionFolder, "css\\");
-                    string imageSource = string.Concat(templateExtractionFolder, "images\\");
-                    string masterPagePath = string.Concat(templateExtractionFolder, "page.master");
+                    string cssPath = string.Concat(this.templateExtractionFolder, "css\\");
+                    string imageSource = string.Concat(this.templateExtractionFolder, "images\\");
+                    string masterPagePath = string.Concat(this.templateExtractionFolder, "page.master");
 
-                    string themeTargetFolder = string.Concat(templateInstallationFolder, "\\App_Themes\\", pageTemplate.Name);
+                    string themeTargetFolder = string.Concat(templateInstallationFolder, "\\App_Themes\\", this.pageTemplate.Name);
                     string imagesTargetFolder = string.Concat(themeTargetFolder, "\\Images");
                     string cssTargetFolder = string.Concat(themeTargetFolder, "\\Global\\");
 
                     if (File.Exists(masterPagePath))
                     {
-
                         File.Copy(masterPagePath, string.Concat(templateInstallationFolder, "\\App_Master\\page.master"), true);
                     }
 
                     if (Directory.Exists(imageSource))
-                        CopyFiles(imageSource, imagesTargetFolder);
+                        this.CopyFiles(imageSource, imagesTargetFolder);
 
                     if (Directory.Exists(cssPath))
                     {
-
-                        CopyFiles(cssPath, cssTargetFolder);
-                        RegisterTheme();
+                        this.CopyFiles(cssPath, cssTargetFolder);
+                        this.RegisterTheme();
                     }
 
+                    UploadImages(imagesTargetFolder, this.pageTemplate.Name);
 
-                    UploadImages(imagesTargetFolder, pageTemplate.Name);
-
-                    if (templateobject.layout != null)
+                    if (this.templateobject.Layout != null)
                     {
-                        RegisterTemplate();
+                        this.RegisterTemplate();
                     }
                 }
                 else
@@ -136,7 +128,7 @@ namespace TemplateImporter
             finally
             {
                 File.Delete(fileToExtract);
-                DeleteTemporaryFolder(templateExtractionFolder);
+                this.DeleteTemporaryFolder(this.templateExtractionFolder);
 
             }
             return success;
@@ -147,7 +139,7 @@ namespace TemplateImporter
         /// </summary>
         private void GetTemplateFromXML()
         {
-            string layoutFilePath = string.Concat(templateExtractionFolder, "layout.xml");
+            string layoutFilePath = string.Concat(this.templateExtractionFolder, "layout.xml");
 
             XmlSerializer serializer = new XmlSerializer(typeof(Template));
             StreamReader reader = new StreamReader(layoutFilePath);
@@ -155,7 +147,7 @@ namespace TemplateImporter
             try
             {
                 object obj = serializer.Deserialize(reader);
-                templateobject = (Template)obj;
+                this.templateobject = (Template)obj;
                 reader.Close();
             }
             catch (Exception ex)
@@ -177,7 +169,6 @@ namespace TemplateImporter
                 Directory.CreateDirectory(directory);
                 using (ZipFile zip = ZipFile.Read(zipFileArchive))
                 {
-
                     foreach (var file in zip.Entries)
                     {
                         file.Extract(directory, true);
@@ -229,20 +220,20 @@ namespace TemplateImporter
         /// </summary>
         private void RegisterTheme()
         {
-            pageTemplate.Theme = pageTemplate.Name;
+            this.pageTemplate.Theme = this.pageTemplate.Name;
 
             ConfigManager manager = Config.GetManager();
             var appearanceConfig = manager.GetSection<AppearanceConfig>();
             var defaultSamplesTheme = new ThemeElement(appearanceConfig.FrontendThemes)
             {
-                Name = pageTemplate.Theme,
-                Path = string.Concat("~/App_Data/Sitefinity/WebsiteTemplates/", pageTemplate.Name, "/App_Themes/", pageTemplate.Name)
+                Name = this.pageTemplate.Theme,
+                Path = string.Concat("~/App_Data/Sitefinity/WebsiteTemplates/", this.pageTemplate.Name, "/App_Themes/", this.pageTemplate.Name)
             };
 
             if (!appearanceConfig.FrontendThemes.ContainsKey(defaultSamplesTheme.Name))
                 appearanceConfig.FrontendThemes.Add(defaultSamplesTheme);
 
-            appearanceConfig.DefaultFrontendTheme = pageTemplate.Theme;
+            appearanceConfig.DefaultFrontendTheme = this.pageTemplate.Theme;
 
             manager.SaveSection(appearanceConfig);
         }
@@ -252,83 +243,56 @@ namespace TemplateImporter
         /// </summary>
         private void RegisterTemplate()
         {
-
             var present = this.pageManager.CreatePresentationItem<TemplatePresentation>();
             present.DataType = Presentation.HtmlDocument;
             present.Name = "master";
             var resName = "Telerik.Sitefinity.Resources.Pages.Frontend.aspx";
             present.Data = ControlUtilities.GetTextResource(resName, Config.Get<ControlsConfig>().ResourcesAssemblyInfo);
 
-            pageTemplate.MasterPage = string.Concat("~/App_Data/Sitefinity/WebsiteTemplates/", pageTemplate.Name, "/App_Master/page.master");
+            this.pageTemplate.MasterPage = string.Concat("~/App_Data/Sitefinity/WebsiteTemplates/", this.pageTemplate.Name, "/App_Master/page.master");
 
-
-            var sibling = new Guid();
-
-            for (int i = 0; i < templateobject.layout.placeholders.Length; i++)
+            for (int i = 0; i < this.templateobject.Layout.Placeholders.Length; i++)
             {
-                var placeholder = templateobject.layout.placeholders[i];
+                var placeholder = this.templateobject.Layout.Placeholders[i];
 
-                //var layout = new LayoutControl();
-
-                //var ctrlData = this.pageManager.CreateControl<TemplateControl>();
-
-
-                //if (placeholder.layoutwidget != null)
-                //{
-                //    layout.Layout = createPlaceholderLayout(placeholder.layoutwidget.columns, placeholder.id);
-
-                //}
-
-                //ctrlData.ObjectType = layout.GetType().FullName;
-                //ctrlData.PlaceHolder = "Body";
-                //ctrlData.SiblingId = sibling;
-                //sibling = ctrlData.Id;
-                //ctrlData.Caption = placeholder.id;
-
-                //this.pageManager.ReadProperties(layout, ctrlData);
-                //this.pageManager.SetControlId(pageTemplate, ctrlData);
-
-
-                for (int j = 0; j < placeholder.layoutwidget.columns.Length; j++)
+                for (int j = 0; j < placeholder.LayoutWidget.Columns.Length; j++)
                 {
+                    var column = placeholder.LayoutWidget.Columns[j];
 
-                    var column = placeholder.layoutwidget.columns[j];
-
-                    var widget = column.widget;
-                    if (widget.type != null)
+                    var widget = column.Widget;
+                    if (widget.Type != null)
                     {
                         ControlData ctrlData = null;
-                        if (widget.type.ToLower() == "content block")
+                        if (widget.Type.ToLower() == "content block")
                         {
                             ContentBlockBase newContentBlock = new ContentBlockBase();
-                            newContentBlock.Html = widget.properties.text;
-                            newContentBlock.CssClass = widget.cssclass;
+                            newContentBlock.Html = widget.Properties.Text;
+                            newContentBlock.CssClass = widget.CssClass;
                             newContentBlock.LayoutTemplatePath = "~/SFRes/Telerik.Sitefinity.Resources.Templates.Backend.GenericContent.ContentBlock.ascx";
 
-                            var templateContentBlock = pageManager.CreateControl<Telerik.Sitefinity.Pages.Model.TemplateControl>(newContentBlock, widget.sfID);
+                            var templateContentBlock = this.pageManager.CreateControl<Telerik.Sitefinity.Pages.Model.TemplateControl>(newContentBlock, widget.SfID);
                             templateContentBlock.Caption = "Content Block";
 
-                            pageTemplate.Controls.Add(templateContentBlock);
+                            this.pageTemplate.Controls.Add(templateContentBlock);
                             ctrlData = templateContentBlock;
                         }
-                        else if (widget.type.ToLower() == "image")
+                        else if (widget.Type.ToLower() == "image")
                         {
                             ImageControl newImage = new ImageControl();
                             newImage.LayoutTemplatePath = "~/SFRes/Telerik.Sitefinity.Resources.Templates.PublicControls.ImageControl.ascx";
-                            newImage.CssClass = widget.cssclass;
-                            newImage.ImageId = GetImageId(widget.properties.filename, pageTemplate.Name);
+                            newImage.CssClass = widget.CssClass;
+                            newImage.ImageId = GetImageId(widget.Properties.Filename, this.pageTemplate.Name);
 
-                            var templateImageControl = pageManager.CreateControl<Telerik.Sitefinity.Pages.Model.TemplateControl>(newImage, widget.sfID);
+                            var templateImageControl = this.pageManager.CreateControl<Telerik.Sitefinity.Pages.Model.TemplateControl>(newImage, widget.SfID);
                             templateImageControl.Caption = "Image";
 
-                            pageTemplate.Controls.Add(templateImageControl);
+                            this.pageTemplate.Controls.Add(templateImageControl);
                             ctrlData = templateImageControl;
 
                         }
-                        else if (widget.type.ToLower() == "navigation")
+                        else if (widget.Type.ToLower() == "navigation")
                         {
-
-                            string type = widget.properties.navigationtype;
+                            string type = widget.Properties.NavigationType;
                             NavigationControl navigation = new NavigationControl();
 
                             navigation.SelectionMode = PageSelectionModes.TopLevelPages;
@@ -359,33 +323,31 @@ namespace TemplateImporter
                             }
 
                             navigation.NavigationMode = navigationMode;
-                            navigation.Skin = widget.cssclass;
+                            navigation.Skin = widget.CssClass;
 
-                            var templateNavigationControl = pageManager.CreateControl<Telerik.Sitefinity.Pages.Model.TemplateControl>(navigation, widget.sfID);
+                            var templateNavigationControl = this.pageManager.CreateControl<Telerik.Sitefinity.Pages.Model.TemplateControl>(navigation, widget.SfID);
                             templateNavigationControl.Caption = "Navigation";
 
-                            pageTemplate.Controls.Add(templateNavigationControl);
+                            this.pageTemplate.Controls.Add(templateNavigationControl);
                             ctrlData = templateNavigationControl;
 
                         }
 
                         var widgetCulture = this.GetCurrentLanguage();
-                        pageManager.SetControlId(pageTemplate, ctrlData, widgetCulture);
+                        this.pageManager.SetControlId(this.pageTemplate, ctrlData, widgetCulture);
                     }
                 }
-
-                //pageTemplate.Controls.Add(ctrlData);
             }
 
-            pageTemplate.Category = Telerik.Sitefinity.Abstractions.SiteInitializer.CustomTemplatesCategoryId;
-            pageManager.SaveChanges();
+            this.pageTemplate.Category = Telerik.Sitefinity.Abstractions.SiteInitializer.CustomTemplatesCategoryId;
+            this.pageManager.SaveChanges();
 
             // publish the template
-            var draft = pageManager.EditTemplate(pageTemplate.Id);
-            var master = pageManager.TemplatesLifecycle.CheckOut(draft);
-            master = pageManager.TemplatesLifecycle.CheckIn(master);
-            pageManager.TemplatesLifecycle.Publish(master);
-            pageManager.SaveChanges();
+            var draft = this.pageManager.EditTemplate(this.pageTemplate.Id);
+            var master = this.pageManager.TemplatesLifecycle.CheckOut(draft);
+            master = this.pageManager.TemplatesLifecycle.CheckIn(master);
+            this.pageManager.TemplatesLifecycle.Publish(master);
+            this.pageManager.SaveChanges();
 
         }
 
@@ -404,12 +366,12 @@ namespace TemplateImporter
         /// <summary>
         /// Deletes the temporary folder.
         /// </summary>
-        /// <param name="FolderName">Name of the folder.</param>
-        private void DeleteTemporaryFolder(string FolderName)
+        /// <param name="folderName">Name of the folder.</param>
+        private void DeleteTemporaryFolder(string folderName)
         {
             try
             {
-                DirectoryInfo dir = new DirectoryInfo(FolderName);
+                DirectoryInfo dir = new DirectoryInfo(folderName);
                 dir.Delete(true);
             }
             catch (Exception ex)

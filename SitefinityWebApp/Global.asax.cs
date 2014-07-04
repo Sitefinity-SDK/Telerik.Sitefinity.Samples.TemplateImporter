@@ -1,15 +1,14 @@
 ﻿using System;
 using Telerik.Sitefinity.Abstractions;
-using Telerik.Sitefinity.Samples.Common;
-using TemplateImporter;
 using Telerik.Sitefinity.Modules.GenericContent.Web.UI;
+using Telerik.Sitefinity.Samples.Common;
 using Telerik.Sitefinity.Services;
+using TemplateImporter;
 
 namespace SitefinityWebApp
 {
     public class Global : System.Web.HttpApplication
     {
-
         private const string SamplesThemeName = "SamplesTheme";
         private const string SamplesThemePath = "~/App_Data/Sitefinity/WebsiteTemplates/Samples/App_Themes/Samples";
 
@@ -23,16 +22,16 @@ namespace SitefinityWebApp
         protected void Application_Start(object sender, EventArgs e)
         {
             Bootstrapper.Initializing += new EventHandler<Telerik.Sitefinity.Data.ExecutingEventArgs>(Bootstrapper_Initializing);
-            SystemManager.ApplicationStart += SystemManager_ApplicationStart;
+            SystemManager.ApplicationStart += this.SystemManager_ApplicationStart;
         }
 
-        void SystemManager_ApplicationStart(object sender, EventArgs e)
+        protected void SystemManager_ApplicationStart(object sender, EventArgs e)
         {
             SystemManager.RunWithElevatedPrivilegeDelegate worker = new SystemManager.RunWithElevatedPrivilegeDelegate(CreateSampleWorker);
             SystemManager.RunWithElevatedPrivilege(worker);
         }
 
-        void Bootstrapper_Initializing(object sender, Telerik.Sitefinity.Data.ExecutingEventArgs e)
+        protected void Bootstrapper_Initializing(object sender, Telerik.Sitefinity.Data.ExecutingEventArgs e)
         {
             if (e.CommandName == "RegisterRoutes")
             {

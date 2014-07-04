@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Text;
+using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Web.UI.WebControls;
 using Telerik.Sitefinity.Web.UI;
 using Telerik.Web.UI;
-using System.Drawing;
 
 namespace TemplateImporter
 {
-
     public class TemplateImporterServerControl : SimpleView
     {
         protected override void InitializeControls(GenericContainer container)
-        {
-            
+        {            
             this.RadUploadControl.AllowedFileExtensions = new string[] { ".zip" };
             this.RadUploadControl.ControlObjectsVisibility = ControlObjectsVisibility.None;
             this.RadUploadControl.OverwriteExistingFiles = true;
@@ -21,25 +19,25 @@ namespace TemplateImporter
             this.RadUploadControl.MaxFileSize = 2147483647;
 
             this.ImportButton.Text = "Import template";
-            this.ImportButton.Click += new EventHandler(UploadButton_Click);
+            this.ImportButton.Click += new EventHandler(this.UploadButton_Click);
 
             this.ImageControl.ImageUrl = this.Page.ClientScript.GetWebResourceUrl(typeof(TemplateImporterServerControl), "TemplateImporter.Web.Controls.importer_bg.jpg");
         }
 
         protected void UploadButton_Click(object sender, EventArgs e)
         {
-            if (RadUploadControl.InvalidFiles.Count > 0)
+            if (this.RadUploadControl.InvalidFiles.Count > 0)
             {
                 StringBuilder response = new StringBuilder("<br/>There was an error while registering your template<br/>");
 
-                UploadedFile file = RadUploadControl.InvalidFiles[0];
-                if (file.ContentLength >= RadUploadControl.MaxFileSize)
+                UploadedFile file = this.RadUploadControl.InvalidFiles[0];
+                if (file.ContentLength >= this.RadUploadControl.MaxFileSize)
                 {
-                    response.Append("Maximum file size: " + RadUploadControl.MaxFileSize.ToString() + " bytes");
+                    response.Append("Maximum file size: " + this.RadUploadControl.MaxFileSize.ToString() + " bytes");
                 }
-                else if (!RadUploadControl.AllowedFileExtensions.Contains(file.GetExtension()))
+                else if (!this.RadUploadControl.AllowedFileExtensions.Contains(file.GetExtension()))
                 {
-                    response.Append("Allowed file extensions: " + string.Join(",", RadUploadControl.AllowedFileExtensions));
+                    response.Append("Allowed file extensions: " + string.Join(",", this.RadUploadControl.AllowedFileExtensions));
                 }
                 else
                 {
@@ -49,29 +47,27 @@ namespace TemplateImporter
 
                 response.Append("<br/><br/>");
 
-                ErrorLabel.Text = response.ToString();
-                ErrorLabel.ForeColor = Color.Red;
+                this.ErrorLabel.Text = response.ToString();
+                this.ErrorLabel.ForeColor = Color.Red;
             }
 
 
-            else if (RadUploadControl.UploadedFiles.Count == 1)
+            else if (this.RadUploadControl.UploadedFiles.Count == 1)
             {
-
                 string physicalPath = AppDomain.CurrentDomain.BaseDirectory;
                 var templateteImporter = new TemplateImporter(
-                    RadUploadControl.UploadedFiles[0].GetName(),
+                    this.RadUploadControl.UploadedFiles[0].GetName(),
                     physicalPath
                 );
-
 
                 bool success = templateteImporter.Import();
 
                 if (success)
-                    ErrorLabel.Text = "Upload successful";
+                    this.ErrorLabel.Text = "Upload successful";
                 else
-                    ErrorLabel.Text = "An error occured while registering the template";
+                    this.ErrorLabel.Text = "An error occured while registering the template";
 
-                ErrorLabel.ForeColor = Color.LightGreen;
+                this.ErrorLabel.ForeColor = Color.LightGreen;
             }
         }
 

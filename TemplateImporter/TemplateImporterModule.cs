@@ -2,11 +2,13 @@
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Telerik.Sitefinity.Abstractions;
+using Telerik.Sitefinity.Abstractions.VirtualPath;
 using Telerik.Sitefinity.Abstractions.VirtualPath.Configuration;
 using Telerik.Sitefinity.Configuration;
 using Telerik.Sitefinity.Localization;
@@ -18,8 +20,6 @@ using Telerik.Sitefinity.Utilities.TypeConverters;
 using Telerik.Web.UI;
 using TemplateImporter.Configuration;
 using TemplateImporter.Localization;
-using System.Text;
-using Telerik.Sitefinity.Abstractions.VirtualPath;
 
 
 namespace TemplateImporter
@@ -75,14 +75,14 @@ namespace TemplateImporter
         {
             var virtualPathConfig = initialzer.Context.GetConfig<VirtualPathSettingsConfig>();
             ConfigManager.Executed += new EventHandler<Telerik.Sitefinity.Data.ExecutedEventArgs>(this.ConfigManager_Executed);
-            var TemplateImporterModuleVirtualPathConfig = new VirtualPathElement(virtualPathConfig.VirtualPaths)
+            var templateImporterModuleVirtualPathConfig = new VirtualPathElement(virtualPathConfig.VirtualPaths)
             {
                 VirtualPath = TemplateImporterModule.TemplateImporterVirtualPath + "*",
                 ResolverName = "EmbeddedResourceResolver",
                 ResourceLocation = "TemplateImporter"
             };
             if (!virtualPathConfig.VirtualPaths.ContainsKey(TemplateImporterModule.TemplateImporterVirtualPath + "*"))
-                virtualPathConfig.VirtualPaths.Add(TemplateImporterModuleVirtualPathConfig);
+                virtualPathConfig.VirtualPaths.Add(templateImporterModuleVirtualPathConfig);
         }
 
         private void ConfigManager_Executed(object sender, Telerik.Sitefinity.Data.ExecutedEventArgs args)
@@ -93,7 +93,6 @@ namespace TemplateImporter
 
                 if (section != null)
                 {
-
                     // Reset the Virtual path manager, whenever the section of the VirtualPathSettingsConfig is saved.
                     // This is needed so that the prefixes for templates in our module assembly are taken into account.
                     VirtualPathManager.Reset();
@@ -103,7 +102,9 @@ namespace TemplateImporter
         }
 
         public override void Upgrade(SiteInitializer initializer, Version upgradeFrom)
-        { }
+        { 
+
+        }
 
         protected override ConfigSection GetModuleConfig()
         {
@@ -115,17 +116,17 @@ namespace TemplateImporter
             var pageManager = initializer.PageManager;
             var moduleNode = pageManager.GetPageNode(SiteInitializer.DesignNodeId);
 
-            PageNode TemplateImporterNode = pageManager.GetPageNodes().Where(p => p.Id == TemplateImporterModule.TemplateImporterPageGroupID).SingleOrDefault();
-            if (TemplateImporterNode == null)
+            PageNode templateImporterNode = pageManager.GetPageNodes().Where(p => p.Id == TemplateImporterModule.TemplateImporterPageGroupID).SingleOrDefault();
+            if (templateImporterNode == null)
             {
-                TemplateImporterNode = initializer.CreatePageNode(TemplateImporterModule.TemplateImporterPageGroupID, moduleNode, NodeType.Group);
+                templateImporterNode = initializer.CreatePageNode(TemplateImporterModule.TemplateImporterPageGroupID, moduleNode, NodeType.Group);
 
-                TemplateImporterNode.Name = TemplateImporterModule.ModuleName;
-                TemplateImporterNode.ShowInNavigation = true;
-                TemplateImporterNode.Attributes["ModuleName"] = TemplateImporterModule.ModuleName;
-                TemplateImporterNode.Title = TemplateImporterModule.ModuleName;
-                TemplateImporterNode.UrlName = TemplateImporterModule.ModuleName;
-                TemplateImporterNode.Description = "Module for importing Template packages";
+                templateImporterNode.Name = TemplateImporterModule.ModuleName;
+                templateImporterNode.ShowInNavigation = true;
+                templateImporterNode.Attributes["ModuleName"] = TemplateImporterModule.ModuleName;
+                templateImporterNode.Title = TemplateImporterModule.ModuleName;
+                templateImporterNode.UrlName = TemplateImporterModule.ModuleName;
+                templateImporterNode.Description = "Module for importing Template packages";
             }
 
             var landingPage = pageManager.GetPageNodes().SingleOrDefault(p => p.Id == this.LandingPageId);
@@ -151,11 +152,12 @@ namespace TemplateImporter
               
                 TemplateImporterServerControl control = new TemplateImporterServerControl();
                               
-                Control[] pageControls = new Control[] { 
+                Control[] pageControls = new Control[] 
+                { 
                    control
                 };
                 
-                initializer.CreatePageFromConfiguration(pageInfo, TemplateImporterNode, pageControls);
+                initializer.CreatePageFromConfiguration(pageInfo, templateImporterNode, pageControls);
             }
         }
     }

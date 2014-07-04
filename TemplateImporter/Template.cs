@@ -13,53 +13,45 @@ using System.Xml;
 using System.Xml.Serialization;
 using Telerik.Sitefinity.Utilities.Zip;
 
-
 namespace TemplateImporter
 {
-
-
-
     [XmlRoot("template")]
     [DataContract]
     public partial class Template
     {
-
         [XmlElement("layout")]
         [DataMember]
-        public Layout layout { get; set; }
+        public Layout Layout { get; set; }
 
         [XmlElement("metadata")]
         [DataMember]
-        public Metadata metadata { get; set; }
+        public Metadata Metadata { get; set; }
 
         [XmlIgnore]
         [DataMember]
-        public CSS[] css { get; set; }
+        public CSS[] Css { get; set; }
 
         [XmlIgnore]
         [DataMember]
-        public string background { get; set; }
+        public string Background { get; set; }
 
         [XmlIgnore]
         [DataMember]
-        public string sessionid { get; set; }
+        public string SessionId { get; set; }
 
         [XmlIgnore]
         [DataMember]
-        public SessionState sessionstate { get; set; }
+        public SessionState SessionState { get; set; }
 
 
 
 
         /// <summary>
-        /// Serializes the templalte object to XML and returns the memory stream.
+        /// Serializes the template object to XML and returns the memory stream.
         /// </summary>
         /// <returns></returns>
         public MemoryStream SerializeToXML()
         {
-
-
-
             MemoryStream stream = new MemoryStream();
             XmlSerializer xs = new XmlSerializer(typeof(Template));
             XmlTextWriter xmlTextWriter = new XmlTextWriter(stream, Encoding.UTF8);
@@ -112,7 +104,7 @@ namespace TemplateImporter
     {
         [XmlElement("meta")]
         [DataMember]
-        public MetadataItem[] metadataitems { get; set; }
+        public MetadataItem[] MetadataItems { get; set; }
     }
 
     [DataContract]
@@ -120,37 +112,34 @@ namespace TemplateImporter
     {
         [XmlAttribute("id")]
         [DataMember]
-        public string id { get; set; }
+        public string Id { get; set; }
 
         [XmlElement("value")]
         [DataMember]
-        public string value { get; set; }
+        public string Value { get; set; }
     }
-
 
     [DataContract]
     public class Layout
     {
         [XmlElement("placeholder")]
         [DataMember]
-        public Placeholder[] placeholders { get; set; }
+        public Placeholder[] Placeholders { get; set; }
     }
 
     [DataContract]
     public class Placeholder
     {
-
         [XmlAttribute("id")]
         [DataMember]
-        public string id { get; set; }
-
+        public string Id { get; set; }
 
         [DataMember]
-        public string layoutid { get; set; }
+        public string LayoutId { get; set; }
 
         [XmlElement("layoutwidget", IsNullable = false)]
         [DataMember]
-        public LayoutWidget layoutwidget { get; set; }
+        public LayoutWidget LayoutWidget { get; set; }
     }
 
     [DataContract]
@@ -158,28 +147,28 @@ namespace TemplateImporter
     {
         [XmlElement("column")]
         [DataMember]
-        public Column[] columns { get; set; }
+        public Column[] Columns { get; set; }
 
         [DataMember]
-        public bool custom { get; set; }
+        public bool Custom { get; set; }
 
         [DataMember]
-        public string backgroundcolor { get; set; }
+        public string BackgroundColor { get; set; }
 
         [DataMember]
-        public string backgroundimageurl { get; set; }
+        public string BackgroundImageUrl { get; set; }
 
         [DataMember]
-        public string backgroundimage { get; set; }
+        public string BackgroundImage { get; set; }
 
         [DataMember]
-        public string background_position { get; set; }
+        public string BackgroundPosition { get; set; }
 
         [DataMember]
-        public string background_repeat { get; set; }
+        public string BackgroundRepeat { get; set; }
 
         [DataMember]
-        public string background_attachment { get; set; }
+        public string BackgroundAttachment { get; set; }
 
     }
 
@@ -188,32 +177,31 @@ namespace TemplateImporter
     {
         [XmlAttribute("width")]
         [DataMember]
-        public int width { get; set; }
+        public int Width { get; set; }
 
         [XmlElement("widget", IsNullable = false)]
         [DataMember]
-        public Widget widget { get; set; }
+        public Widget Widget { get; set; }
     }
 
     [DataContract]
     public class Widget
     {
-
         [XmlElement("type")]
         [DataMember]
-        public string type { get; set; }
+        public string Type { get; set; }
 
         [XmlElement("sfID")]
         [DataMember]
-        public string sfID { get; set; }
+        public string SfID { get; set; }
 
         [XmlElement("properties")]
         [DataMember]
-        public Properties properties { get; set; }
+        public Properties Properties { get; set; }
 
         [XmlElement("cssclass")]
         [DataMember]
-        public string cssclass { get; set; }
+        public string CssClass { get; set; }
     }
 
     [DataContract]
@@ -221,27 +209,27 @@ namespace TemplateImporter
     {
         [XmlElement("text")]
         [DataMember]
-        public string text;
+        public string Text;
 
         [XmlElement("navigationtype")]
         [DataMember]
-        public string navigationtype;
+        public string NavigationType;
 
         [XmlElement("filename")]
         [DataMember]
-        public string filename;
+        public string Filename;
 
         [XmlElement("size")]
         [DataMember]
-        public string size;
+        public string Size;
 
         [XmlElement("navigationskin")]
         [DataMember]
-        public string navigationskin;
+        public string NavigationSkin;
 
         [XmlIgnore]
         [DataMember]
-        public string url;
+        public string Url;
     }
 
 
@@ -249,108 +237,108 @@ namespace TemplateImporter
     public class CSS
     {
         [DataMember]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [DataMember]
-        public string[] properties { get; set; }
+        public string[] Properties { get; set; }
 
         [DataMember]
-        public string[] values { get; set; }
+        public string[] Values { get; set; }
     }
 
     [DataContract]
     public class SessionState
     {
         [DataMember]
-        public BackgroundState backgroundstate { get; set; }
+        public BackgroundState BackgroundState { get; set; }
 
         [DataMember]
-        public LayoutState layoutstate { get; set; }
+        public LayoutState LayoutState { get; set; }
 
         [DataMember]
-        public ContentState contentstate { get; set; }
+        public ContentState ContentState { get; set; }
 
         [DataMember]
-        public string[] uploaded_images { get; set; }
+        public string[] UploadedImages { get; set; }
 
         [DataMember]
-        public string[] uploaded_backgrounds { get; set; }
+        public string[] UploadedBackgrounds { get; set; }
 
         [DataMember]
-        public int id { get; set; }
+        public int Id { get; set; }
     }
 
     [DataContract]
     public class BackgroundState
     {
         [DataMember]
-        public string image { get; set; }
+        public string Image { get; set; }
         [DataMember]
-        public string color { get; set; }
+        public string Color { get; set; }
         [DataMember]
-        public string position { get; set; }
+        public string Position { get; set; }
         [DataMember]
-        public string repeat { get; set; }
+        public string Repeat { get; set; }
         [DataMember]
-        public string attachment { get; set; }
+        public string Attachment { get; set; }
     }
 
     [DataContract]
     public class LayoutState
     {
         [DataMember]
-        public string position { get; set; }
+        public string Position { get; set; }
         [DataMember]
-        public string width { get; set; }
+        public string Width { get; set; }
         [DataMember]
-        public string margin_left { get; set; }
+        public string Margin_left { get; set; }
         [DataMember]
-        public string left { get; set; }
+        public string Left { get; set; }
     }
 
     [DataContract]
     public class ContentState
     {
         [DataMember]
-        public string background { get; set; }
+        public string Background { get; set; }
 
         [DataMember]
-        public Textblocks textblocks { get; set; }
+        public Textblocks Textblocks { get; set; }
 
         [DataMember]
-        public string navigationskin { get; set; }
+        public string NavigationSkin { get; set; }
 
         [DataMember]
-        public string wrapperclasses { get; set; }
+        public string WrapperClasses { get; set; }
     }
 
     [DataContract]
     public class Textblocks
     {
         [DataMember]
-        public string line_height { get; set; }
+        public string Line_height { get; set; }
         [DataMember]
-        public string basestyle { get; set; }
+        public string Basestyle { get; set; }
         [DataMember]
-        public string font_size { get; set; }
+        public string Font_size { get; set; }
         [DataMember]
-        public Textblock text { get; set; }
+        public Textblock Text { get; set; }
         [DataMember]
-        public Textblock quote { get; set; }
+        public Textblock Quote { get; set; }
         [DataMember]
-        public Textblock heading { get; set; }
+        public Textblock Heading { get; set; }
         [DataMember]
-        public Textblock link { get; set; }
+        public Textblock Link { get; set; }
     }
 
     [DataContract]
     public class Textblock
     {
         [DataMember]
-        public string font_family { get; set; }
+        public string Font_family { get; set; }
 
         [DataMember]
-        public string color { get; set; }
+        public string Color { get; set; }
     }
 
 }
