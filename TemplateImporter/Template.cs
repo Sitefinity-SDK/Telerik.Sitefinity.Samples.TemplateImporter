@@ -21,7 +21,7 @@ namespace TemplateImporter
 
     [XmlRoot("template")]
     [DataContract]
-    public partial class Template 
+    public partial class Template
     {
 
         [XmlElement("layout")]
@@ -49,7 +49,7 @@ namespace TemplateImporter
         public SessionState sessionstate { get; set; }
 
 
-        
+
 
         /// <summary>
         /// Serializes the templalte object to XML and returns the memory stream.
@@ -58,7 +58,7 @@ namespace TemplateImporter
         public MemoryStream SerializeToXML()
         {
 
-            
+
 
             MemoryStream stream = new MemoryStream();
             XmlSerializer xs = new XmlSerializer(typeof(Template));
@@ -79,12 +79,12 @@ namespace TemplateImporter
 
             DataContractSerializer ser =
                 new DataContractSerializer(typeof(Template));
-            
+
             ser.WriteObject(writer, this);
             writer.Close();
         }
 
-         /// <summary>
+        /// <summary>
         /// Creates a template from an already exported xml file
         /// </summary>
         /// <param name="stream">The stream.</param>
@@ -93,7 +93,7 @@ namespace TemplateImporter
         {
             if (stream == null)
                 return null;
-            
+
             XmlSerializer serializer = new XmlSerializer(typeof(Template));
             StreamReader reader = new StreamReader(stream);
 
@@ -148,7 +148,7 @@ namespace TemplateImporter
         [DataMember]
         public string layoutid { get; set; }
 
-        [XmlElement("layoutwidget",IsNullable=false)]
+        [XmlElement("layoutwidget", IsNullable = false)]
         [DataMember]
         public LayoutWidget layoutwidget { get; set; }
     }
@@ -190,7 +190,7 @@ namespace TemplateImporter
         [DataMember]
         public int width { get; set; }
 
-        [XmlElement("widget",IsNullable=false)]
+        [XmlElement("widget", IsNullable = false)]
         [DataMember]
         public Widget widget { get; set; }
     }
@@ -198,7 +198,7 @@ namespace TemplateImporter
     [DataContract]
     public class Widget
     {
-        
+
         [XmlElement("type")]
         [DataMember]
         public string type { get; set; }
@@ -284,35 +284,35 @@ namespace TemplateImporter
     public class BackgroundState
     {
         [DataMember]
-        public string image {get; set;}
+        public string image { get; set; }
         [DataMember]
-        public string color {get; set;}
+        public string color { get; set; }
         [DataMember]
-        public string position {get; set;}
+        public string position { get; set; }
         [DataMember]
-        public string repeat {get; set;}
+        public string repeat { get; set; }
         [DataMember]
-        public string attachment {get; set;}
+        public string attachment { get; set; }
     }
 
     [DataContract]
     public class LayoutState
     {
         [DataMember]
-        public string position {get; set;}
+        public string position { get; set; }
         [DataMember]
-        public string width {get; set;}
+        public string width { get; set; }
         [DataMember]
-        public string margin_left {get; set;}
+        public string margin_left { get; set; }
         [DataMember]
-        public string left {get; set;}
+        public string left { get; set; }
     }
 
     [DataContract]
     public class ContentState
     {
         [DataMember]
-        public string background {get; set;}
+        public string background { get; set; }
 
         [DataMember]
         public Textblocks textblocks { get; set; }

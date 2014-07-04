@@ -23,7 +23,13 @@ namespace SitefinityWebApp
         protected void Application_Start(object sender, EventArgs e)
         {
             Bootstrapper.Initializing += new EventHandler<Telerik.Sitefinity.Data.ExecutingEventArgs>(Bootstrapper_Initializing);
-            Bootstrapper.Initialized += new EventHandler<Telerik.Sitefinity.Data.ExecutedEventArgs>(this.Bootstrapper_Initialized);
+            SystemManager.ApplicationStart += SystemManager_ApplicationStart;
+        }
+
+        void SystemManager_ApplicationStart(object sender, EventArgs e)
+        {
+            SystemManager.RunWithElevatedPrivilegeDelegate worker = new SystemManager.RunWithElevatedPrivilegeDelegate(CreateSampleWorker);
+            SystemManager.RunWithElevatedPrivilege(worker);
         }
 
         void Bootstrapper_Initializing(object sender, Telerik.Sitefinity.Data.ExecutingEventArgs e)
@@ -31,15 +37,6 @@ namespace SitefinityWebApp
             if (e.CommandName == "RegisterRoutes")
             {
                 SampleUtilities.RegisterModule<TemplateImporterModule>("Template Importer", "This module imports templates from template builder.");
-            }
-        }
-
-        protected void Bootstrapper_Initialized(object sender, Telerik.Sitefinity.Data.ExecutedEventArgs args)
-        {
-            if (args.CommandName == "Bootstrapped")
-            {
-                SystemManager.RunWithElevatedPrivilegeDelegate worker = new SystemManager.RunWithElevatedPrivilegeDelegate(CreateSampleWorker);
-                SystemManager.RunWithElevatedPrivilege(worker);
             }
         }
 
