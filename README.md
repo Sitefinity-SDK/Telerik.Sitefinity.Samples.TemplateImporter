@@ -14,7 +14,7 @@ Using the Template Importer sample, you can:
 
 ### Requirements
 
-* Sitefinity 7.1 license
+* Sitefinity 7.3 license
 * .NET Framework 4
 * Visual Studio 2012
 * Microsoft SQL Server 2008R2 or later versions
