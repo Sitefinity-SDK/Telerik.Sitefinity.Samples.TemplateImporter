@@ -14,7 +14,7 @@ Using the Template Importer sample, you can:
 
 ### Requirements
 
-* Sitefinity 7.3 license
+* Sitefinity 8.0 license
 * .NET Framework 4
 * Visual Studio 2012
 * Microsoft SQL Server 2008R2 or later versions
@@ -34,8 +34,8 @@ For a history and additional information related to package versions on differen
 ### Installation instructions: SDK Samples from GitHub
 
 
-1. In Solution Explorer, navigate to _SitefinityWebApp_ -> *App_Data* -> _Sitefinity_ -> _Configuration_ and select the **DataConfig.config** file. 
-2. Modify the **connectionString** value to match your server address.
+1. In Solution Explorer, navigate to _SitefinityWebApp_ » *App_Data* » _Sitefinity_ » _Configuration_ and select the **StartupConfig.config** file. 
+2. Modify the **dbType**, **sqlInstance** and **dbName** values to match your server settings.
 3. Build the solution.
 
 For version-specific details about the required Sitefinity NuGet packages for this sample application, click on [Releases]
@@ -46,12 +46,11 @@ For version-specific details about the required Sitefinity NuGet packages for th
 
 To login to Sitefinity backend, use the following credentials: 
 
-**Username:** admin
+**Username:** admin   
 **Password:** password
 
 
 ### Additional resources
-
-[Developers Guide](http://www.sitefinity.com/documentation/documentationarticles/developers-guide)
-
-[Template Builder](http://www.sitefinity.com/documentation/documentationarticles/template-builder)
+Sitefinity documentation
+* [Development: Use and extend Sitefinity functionality](http://docs.sitefinity.com/develop-create-and-manage-website-content)
+* [Create templates with the Template builder](http://docs.sitefinity.com/create-templates-with-the-template-builder)

@@ -1,5 +1,6 @@
 ﻿using System;
 using Telerik.Sitefinity.Abstractions;
+using Telerik.Sitefinity.Data;
 using Telerik.Sitefinity.Modules.GenericContent.Web.UI;
 using Telerik.Sitefinity.Samples.Common;
 using Telerik.Sitefinity.Services;
@@ -21,27 +22,24 @@ namespace SitefinityWebApp
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Bootstrapper.Initializing += new EventHandler<Telerik.Sitefinity.Data.ExecutingEventArgs>(Bootstrapper_Initializing);
-            SystemManager.ApplicationStart += this.SystemManager_ApplicationStart;
+            Bootstrapper.Initialized += Bootstrapper_Initialized;
         }
 
-        protected void SystemManager_ApplicationStart(object sender, EventArgs e)
-        {
-            SystemManager.RunWithElevatedPrivilegeDelegate worker = new SystemManager.RunWithElevatedPrivilegeDelegate(CreateSampleWorker);
-            SystemManager.RunWithElevatedPrivilege(worker);
-        }
-
-        protected void Bootstrapper_Initializing(object sender, Telerik.Sitefinity.Data.ExecutingEventArgs e)
+        void Bootstrapper_Initialized(object sender, ExecutedEventArgs e)
         {
             if (e.CommandName == "RegisterRoutes")
             {
                 SampleUtilities.RegisterModule<TemplateImporterModule>("Template Importer", "This module imports templates from template builder.");
             }
+            if ((Bootstrapper.IsDataInitialized) && (e.CommandName == "Bootstrapped"))
+            {
+                SystemManager.RunWithElevatedPrivilegeDelegate worker = new SystemManager.RunWithElevatedPrivilegeDelegate(CreateSampleWorker);
+                SystemManager.RunWithElevatedPrivilege(worker);
+            }
         }
 
         private void CreateSampleWorker(object[] args)
         {
-            SampleUtilities.CreateUsersAndRoles();
             SampleUtilities.RegisterTheme(SamplesThemeName, SamplesThemePath);
             SampleUtilities.RegisterTemplate(new Guid(SamplesTemplateId), SamplesTemplateName, SamplesTemplateName, SamplesTemplatePath, SamplesThemeName);
 

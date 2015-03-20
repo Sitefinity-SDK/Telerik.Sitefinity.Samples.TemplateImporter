@@ -1,0 +1,14 @@
+SitefinityWebApp/.nuget/NuGet.exe
+SitefinityWebApp/App_Data/Sitefinity/Configuration/*
+!SitefinityWebApp/App_Data/Sitefinity/Configuration/StartupConfig.config
+SitefinityWebApp/App_Data/Sitefinity/logs/*
+SitefinityWebApp/bin/*
+SitefinityWebApp/obj/*
+SitefinityWebApp/packages/*
+SitefinityWebApp/ResourcePackages/*
+TemplateImporter/bin/*
+TemplateImporter/obj/*
+TemplateImporter/Packages/*
+*.Cache
+*.user
+*.lic
