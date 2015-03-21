@@ -12,3 +12,5 @@ TemplateImporter/Packages/*
 *.Cache
 *.user
 *.lic
+SitefinityWebApp/TemplateImporter.sln.GhostDoc.xml
+*.suo

@@ -38,15 +38,13 @@ For a history and additional information related to package versions on differen
 2. Modify the **dbType**, **sqlInstance** and **dbName** values to match your server settings.
 3. Build the solution.
 
-For version-specific details about the required Sitefinity NuGet packages for this sample application, click on [Releases]
- (https://github.com/Sitefinity-SDK/Telerik.Sitefinity.Samples.TemplateImporter/releases).
+For version-specific details about the required Sitefinity NuGet packages for this sample application, click on [Releases](https://github.com/Sitefinity-SDK/Telerik.Sitefinity.Samples.TemplateImporter/releases).
 
   
 ### Login
 
-To login to Sitefinity backend, use the following credentials: 
-
-**Username:** admin   
+To login to Sitefinity backend, use the following credentials:  
+**Username:** admin    
 **Password:** password
 
 
