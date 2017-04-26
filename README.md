@@ -1,6 +1,8 @@
 Progress.Sitefinity.Samples.TemplateImporter
 ===========================================
 
+### This repository is not automatically upgraded to latest Sitefintiy version. The repository is monitored for pull requests and fixes. The latest official version of Sitefinity that supports this sample is 9.1. Be aware that using a higher version could cause unexpected behavior. If you successfully upgrade the example to a greater version, please share your work with the community by submitting your changes via pull request.
+
 [![Build Status](http://sdk-jenkins-ci.cloudapp.net/buildStatus/icon?job=Telerik.Sitefinity.Samples.TemplateImporter.CI)](http://sdk-jenkins-ci.cloudapp.net/job/Telerik.Sitefinity.Samples.TemplateImporter.CI/)
 
 The Template Importer sample project comes together with the Template Importer Module that enables you to import in your Sitefinity CMS site any website template created through the Sitefinity CMS Template Builder.
